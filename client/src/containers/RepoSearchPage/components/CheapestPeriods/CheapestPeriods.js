@@ -9,7 +9,7 @@ const CheapestPeriods = ({ periods, isTomorrow }) => (
       {periods.map(period => <li className="Timeline__item" key={period.time}>
         <p className="Timeline__item__label">
           <button className="Timeline__item__label__button"></button>
-          <span>{period.date} {period.time} is a cheap time to do washing</span>
+          <span><strong>{period.time}</strong> is a cheap time to do washing</span>
           <span className="Timeline__item__label__cost"><strong>{period.averageCost}</strong>p/kWh</span>
         </p>
         </li>)}

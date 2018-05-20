@@ -51,8 +51,6 @@ Timeline.defaultProps = {
 
 Timeline.propTypes = {
   cheapestHours: PropTypes.array.isRequired,
-  morningMarks: PropTypes.object.isRequired,
-  afternoonMarks: PropTypes.object.isRequired,
   morningHours: PropTypes.array.isRequired,
   afternoonHours: PropTypes.array.isRequired,
   sliderChange: PropTypes.func.isRequired,

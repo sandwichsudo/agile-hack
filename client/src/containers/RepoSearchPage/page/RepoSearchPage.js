@@ -36,7 +36,7 @@ export class RepoSearchPage extends Component {
 
     return (
       <div>
-        <h1>Electricity Forecast</h1>
+        <h1>Power Forecast</h1>
         {error && <p>{error}</p>}
         {loading && <div className="loader" />}
         {!loading && <Switch>
