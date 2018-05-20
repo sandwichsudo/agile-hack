@@ -27,7 +27,6 @@ export class RepoSearchPage extends Component {
       loading,
       graphData,
       cheapestHours,
-      location,
       actions,
       morningMinTime,
       morningMaxTime,
@@ -81,6 +80,10 @@ RepoSearchPage.propTypes = {
   actions: PropTypes.object.isRequired,
   error: PropTypes.string,
   loading: PropTypes.bool,
+  morningMinTime:PropTypes.number.isRequired,
+  morningMaxTime:PropTypes.number.isRequired,
+  afternoonMinTime:PropTypes.number.isRequired,
+  afternoonMaxTime: PropTypes.number.isRequired,
 };
 
 RepoSearchPage.defaultProps = {

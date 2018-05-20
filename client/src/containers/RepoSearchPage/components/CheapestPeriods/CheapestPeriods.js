@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Icon from 'react-icons-kit';
 import './CheapestPeriods.scss';
 
 const CheapestPeriods = ({ periods, isTomorrow }) => (
@@ -20,6 +19,7 @@ const CheapestPeriods = ({ periods, isTomorrow }) => (
 
 CheapestPeriods.propTypes = {
   periods: PropTypes.array.isRequired,
+  isTomorrow: PropTypes.bool,
 };
 
 export default CheapestPeriods;

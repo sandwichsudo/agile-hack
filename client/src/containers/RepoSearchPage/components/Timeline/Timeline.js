@@ -44,12 +44,6 @@ class Timeline extends Component {
   }
 }
 
-
-
-const style = {
-  color: 'white',
-}
-
 Timeline.defaultProps = {
   morningHours: ['12am', '2am','4am','6am', '8am', '10am', '12pm'],
   afternoonHours: ['12pm','2pm','4pm', '6pm', '8pm', '10pm', '12am'],
@@ -59,7 +53,13 @@ Timeline.propTypes = {
   cheapestHours: PropTypes.array.isRequired,
   morningMarks: PropTypes.object.isRequired,
   afternoonMarks: PropTypes.object.isRequired,
-
+  morningHours: PropTypes.array.isRequired,
+  afternoonHours: PropTypes.array.isRequired,
+  sliderChange: PropTypes.func.isRequired,
+  morningMinTime: PropTypes.number.isRequired,
+  morningMaxTime: PropTypes.number.isRequired,
+  afternoonMinTime: PropTypes.number.isRequired,
+  afternoonMaxTime: PropTypes.number.isRequired,
 };
 
 export default Timeline;

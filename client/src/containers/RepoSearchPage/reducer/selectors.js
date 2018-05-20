@@ -107,7 +107,6 @@ export const getCheapestPeriods = (state) => {
     const index = closeOfToday > date ? 0 : 1;
     buckets[index].push(item);
   }
-  console.log('buckets', buckets)
   return buckets;
 }
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import 'react-vis/dist/style.css';
-import {XYPlot, XAxis, YAxis, HorizontalGridLines, LineSeries} from 'react-vis';
+import {XYPlot, XAxis, YAxis, LineSeries} from 'react-vis';
 
 const buildAxis = (graphData) => {
   const numberOfHours = 5;
