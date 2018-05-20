@@ -4,7 +4,9 @@ import './CheapestPeriods.scss';
 
 const CheapestPeriods = ({ periods, isTomorrow }) => (
   <div className="CheapestPeriods">
-    { isTomorrow ? <h2 className="h4">Tomorrow</h2> : <h2 className="h4">Today</h2>}
+    { isTomorrow && periods.length >0 && <h2 className="h4">Tomorrow</h2>}
+    { !isTomorrow && periods.length >0 && <h2 className="h4">Today</h2>}
+
     <ul className="Timeline">
       {periods.map(period => <li className="Timeline__item" key={period.time}>
         <p className="Timeline__item__label">
