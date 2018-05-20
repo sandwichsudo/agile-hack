@@ -29,9 +29,7 @@ const Chart = ({ graphData }) => (
               return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             }}
             />
-        <YAxis
-          />
-      <HorizontalGridLines />
+        <YAxis/>
       <LineSeries
         xType='time'
         data={graphData}

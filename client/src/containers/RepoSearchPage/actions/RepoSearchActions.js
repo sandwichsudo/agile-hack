@@ -21,3 +21,9 @@ export const fetchRepos = () => async (dispatch) => {
     error,
   });
 };
+
+export const sliderChange = (name, value) => ({
+    type: actionTypes.SLIDER_CHANGE,
+    name,
+    value,
+})

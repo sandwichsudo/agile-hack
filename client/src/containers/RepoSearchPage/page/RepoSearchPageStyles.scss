@@ -11,3 +11,32 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+$body-bg: #040e28;
+
+body {
+  background: $body-bg;
+  color: white;
+  font-family: sans-serif;
+  margin: 0;
+}
+
+.settingsButton {
+  background-color: $body-bg;
+  color: #fb1a80;
+  text-decoration: underline;
+  border: none;
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+table {
+ border-collapse: collapse;
+  th, td {
+    margin: 0;
+    padding: 10px;
+    border: solid 1px white;
+  }
+  margin: 0 auto;
+}
