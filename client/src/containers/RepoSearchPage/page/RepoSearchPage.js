@@ -24,7 +24,7 @@ export class RepoSearchPage extends Component {
         <h1>Top Javascript Repos</h1>
         {error && <p>{error}</p>}
         {loading && <div className="loader" />}
-        {!loading && <Chart graphData={graphData}/>}
+        {!loading && graphData.length >0 && <Chart graphData={graphData}/>}
         {!loading && <RepoResultsList repos={searchResults}/>}
 
       </div>
@@ -34,6 +34,7 @@ export class RepoSearchPage extends Component {
 
 RepoSearchPage.propTypes = {
   searchResults: PropTypes.array.isRequired,
+  graphData: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired,
   error: PropTypes.string,
   loading: PropTypes.bool,
@@ -45,16 +46,31 @@ RepoSearchPage.defaultProps = {
 
 const getChartData = (state) => {
   return state.results.reduce((chartData, item) => {
-    chartData.push({
-      x: new Date(item.valid_from),
-      y: item.value_inc_vat,
-    })
-    return chartData;
-  }, []);
-}
+    let date = new Date(item.valid_from);
 
+    if (date > Date.now()) {
+      chartData.push({
+        x: date,
+        y: item.value_inc_vat,
+      })
+    }
+
+    return chartData;
+  }, []).reverse();
+}
+const getListData = (state) => {
+  return state.results.reduce((chartData, item) => {
+    let date = new Date(item.valid_from);
+
+    if (date > Date.now()) {
+      chartData.push(item)
+    }
+
+    return chartData;
+  }, []).reverse();
+}
 const mapStateToProps = state => ({
-  searchResults: state.repoSearch.results,
+  searchResults: getListData(state.repoSearch),
   error: state.repoSearch.error,
   loading: state.repoSearch.loading,
   graphData: getChartData(state.repoSearch)
