@@ -90,7 +90,7 @@ export const getCheapestPeriods = (state) => {
       return isInMorningWindow || isInAfternoonWindow;
   })
 
-  let short = periods.sort((a, b) =>  {
+  let short = periods.slice(0,3).sort((a, b) =>  {
       let date1 = new Date(a.valid_from);
       let date2 = new Date(b.valid_from);
 
@@ -102,7 +102,7 @@ export const getCheapestPeriods = (state) => {
       }
       // a must be equal to b
       return 0;
-  }).slice(0,3);
+  });
 
 
   const buckets = [[],[]]
