@@ -5,9 +5,9 @@ const initialState = {
   error: '',
   loading: false,
   morningMinTime: 6,
-  morningMaxTime: 12,
-  afternoonMinTime: 0,
-  afternoonMaxTime: 12,
+  morningMaxTime: 8,
+  afternoonMinTime: 6,
+  afternoonMaxTime: 11,
   devices: [{
     id: 'washingmachine',
     timeinHours: 1,
