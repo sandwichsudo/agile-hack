@@ -105,7 +105,6 @@ export const getCheapestPeriod = (state, numberOfHours) => {
       let inWindow = false;
       if (morningMax.getTime() == afternoonMin.getTime()) {
         inWindow = morningMin <= date && date <= afternoonMax;
-        console.log(item, inWindow)
       }
       const isInMorningWindow = morningMin <= date && date <= morningMax;
       return isInMorningWindow || isInAfternoonWindow || inWindow;

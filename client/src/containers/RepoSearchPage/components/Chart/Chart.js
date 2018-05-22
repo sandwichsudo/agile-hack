@@ -12,7 +12,6 @@ const buildAxis = (graphData) => {
       axis.push(datum.x)
     }
   }
-  console.log('axis', axis)
   return axis;
 }
 
