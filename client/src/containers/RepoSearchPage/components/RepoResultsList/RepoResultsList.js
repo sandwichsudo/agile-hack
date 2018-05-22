@@ -12,8 +12,8 @@ const RepoResultsList = ({ repos }) => (
     </thead>
     <tbody>
       {repos.map(repo => <tr key={repo.valid_from}>
-        <td>{repo.valid_from.split('T')[1].replace(':00Z', '')}</td>
-        <td>{repo.valid_to.split('T')[1].replace(':00Z', '')}</td>
+        <td>{new Date(repo.valid_from).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
+        <td>{new Date(repo.valid_to).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</td>
         <td>{repo.value_inc_vat}</td>
         </tr>)}
     </tbody>

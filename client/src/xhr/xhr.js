@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: '',
+  baseURL: 'https://api.octopus.energy/v1',
   headers: { 'Content-Type': 'application/json;charset=UTF-8' },
 });
 

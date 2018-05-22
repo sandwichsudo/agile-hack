@@ -10,7 +10,7 @@ describe('search service', () => {
 
       const { items } = await searchService.repoSearch();
       expect(xhr._get)
-        .toHaveBeenCalledWith('/search/repositories?q=language:javascript&sort=stars&order=desc');
+        .toHaveBeenCalledWith('/products/AGILE-18-02-21/electricity-tariffs/E-1R-AGILE-18-02-21-C/standard-unit-rates/');
       expect(items).toEqual('foo');
     });
   });

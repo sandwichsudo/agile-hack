@@ -1,96 +1,30 @@
-const combinePeriods = (a, b) => {
-    const start = new Date(a.valid_from).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-    const end = new Date(b.valid_to).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+const combinePeriods = (periods) => {
+    const numberOfPeriods = periods.length;
+    const start = new Date(periods[0].valid_from).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    const end = new Date(periods[numberOfPeriods-1].valid_to).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+    const averageCost = +(periods.reduce((total, item) => {
+      total = total + item.value_inc_vat;
+      return total;
+    }, 0)/numberOfPeriods).toFixed(2);
     return {
       time: `${start}-${end}`,
-      averageCost: +((a.value_inc_vat + b.value_inc_vat) / 2).toFixed(2),
-      date: a.valid_from.split('T')[0],
-      valid_from: a.valid_from,
+      startTime: start,
+      endTime: end,
+      averageCost,
+      date: periods[0].valid_from.split('T')[0],
+      valid_from: periods[0].valid_from,
     }
 }
 
 export const getCheapestPeriods = (state) => {
-  const {
-    morningMinTime,
-    morningMaxTime,
-    afternoonMinTime,
-    afternoonMaxTime,
-  } = state;
-
-  const results = state.results.filter((item) => {
-    let date = new Date(item.valid_from);
-    const now = new Date();
-    return date > now;
-  }).reverse();
-  // bring the cheapest periods to the beginning of the array and check half hours either side
-  const sortedResults = results.slice().sort((a, b) => {
-      if (a.value_inc_vat < b.value_inc_vat) {
-        return -1;
-      }
-      if (a.value_inc_vat < b.value_inc_vat) {
-        return 1;
-      }
-      // a must be equal to b
-      return 0;
-  });
-  const hourPeriods = [];
-  for (var i = 0; i < sortedResults.length; i++) {
-    const period = sortedResults[i];
-
-    const periodIndex = results.findIndex((el) => el.valid_from == period.valid_from);
-    let previousPeriod;
-    let nextPeriod;
-    if (periodIndex > 0) {
-      previousPeriod = results[periodIndex-1];
-      hourPeriods.push(combinePeriods(previousPeriod, period))
-    }
-    if (periodIndex < (results.length - 1)) {
-      nextPeriod = results[periodIndex+1]
-      hourPeriods.push(combinePeriods(period, nextPeriod))
-    }
+  if (state.results.length == 0) { return [[],[]] }
+  const periods = [];
+  for (var i = 0; i < state.devices.length; i++) {
+    const device = state.devices[i];
+    periods.push({...getCheapestPeriod(state, device.timeinHours), ...device})
   }
-  hourPeriods.sort((a, b) =>  {
-      if (a.averageCost < b.averageCost) {
-        return -1;
-      }
-      if (a.averageCost > b.averageCost) {
-        return 1;
-      }
-      // a must be equal to b
-      return 0;
-  });
 
-  //filter duplicates
-  let periods = hourPeriods.filter((thing, index, self) =>
-    index === self.findIndex((t) => (
-      t.time === thing.time && t.averageCost === thing.averageCost
-    ))
-  );
-
-  // filter times outside the ranges
-  periods = periods.filter((item) => {
-      // is date in afternoon window?
-      const date = new Date(item.valid_from);
-
-      const afternoonMin = new Date(item.valid_from);
-      afternoonMin.setHours(12+afternoonMinTime)
-      afternoonMin.setMinutes(0)
-      const afternoonMax = new Date(item.valid_from);
-      afternoonMax.setHours(12+afternoonMaxTime)
-      afternoonMax.setMinutes(0)
-      const isInAfternoonWindow = afternoonMin <= date && date <= afternoonMax;
-      // is date in morning window?
-      const morningMin = new Date(item.valid_from);
-      morningMin.setHours(morningMinTime)
-      morningMin.setMinutes(0)
-      const morningMax = new Date(item.valid_from);
-      morningMax.setHours(morningMaxTime)
-      morningMax.setMinutes(0)
-      const isInMorningWindow = morningMin <= date && date <= morningMax;
-      return isInMorningWindow || isInAfternoonWindow;
-  })
-
-  let short = periods.slice(0,3).sort((a, b) =>  {
+  let short = periods.sort((a, b) =>  {
       let date1 = new Date(a.valid_from);
       let date2 = new Date(b.valid_from);
 
@@ -118,13 +52,86 @@ export const getCheapestPeriods = (state) => {
   return buckets;
 }
 
+export const getCheapestPeriod = (state, numberOfHours) => {
+  const {
+    morningMinTime,
+    morningMaxTime,
+    afternoonMinTime,
+    afternoonMaxTime,
+  } = state;
+
+  const results = state.results.filter((item) => {
+    let date = new Date(item.valid_from);
+    const now = new Date();
+    return date > now;
+  }).reverse();
+
+  const timePeriods = [];
+  const periodsRequired = numberOfHours*2;
+  for (var i = 0; i < results.length; i++) {
+    const endPeriodIndex = i+periodsRequired;
+    if (endPeriodIndex < results.length) {
+      timePeriods.push(combinePeriods(results.slice(i, endPeriodIndex)))
+    }
+  }
+  //filter duplicates
+  let periods = timePeriods.filter((thing, index, self) =>
+    index === self.findIndex((t) => (
+      t.time === thing.time && t.averageCost === thing.averageCost
+    ))
+  );
+
+  // filter times outside the ranges
+  periods = periods.filter((item) => {
+      // is date in afternoon window?
+      const date = new Date(item.valid_from);
+
+      const afternoonMin = new Date(item.valid_from);
+      afternoonMin.setHours(12+afternoonMinTime)
+      afternoonMin.setMinutes(0)
+      const afternoonMax = new Date(item.valid_from);
+      afternoonMax.setHours(12+afternoonMaxTime)
+      afternoonMax.setMinutes(0)
+      const isInAfternoonWindow = afternoonMin <= date && date <= afternoonMax;
+      // is date in morning window?
+      const morningMin = new Date(item.valid_from);
+      morningMin.setHours(morningMinTime)
+      morningMin.setMinutes(0)
+      const morningMax = new Date(item.valid_from);
+      morningMax.setHours(morningMaxTime)
+      morningMax.setMinutes(0)
+
+      // could the period cross the morning and afternoon?
+      let inWindow = false;
+      if (morningMax.getTime() == afternoonMin.getTime()) {
+        inWindow = morningMin <= date && date <= afternoonMax;
+        console.log(item, inWindow)
+      }
+      const isInMorningWindow = morningMin <= date && date <= morningMax;
+      return isInMorningWindow || isInAfternoonWindow || inWindow;
+  })
+
+  // sort by average cost
+  periods.sort((a, b) =>  {
+      if (a.averageCost < b.averageCost) {
+        return -1;
+      }
+      if (a.averageCost > b.averageCost) {
+        return 1;
+      }
+      // a must be equal to b
+      return 0;
+  });
+
+  return periods[0];
+}
+
 export const getChartData = (state) => {
   return state.results.reduce((chartData, item) => {
-    let date = new Date(item.valid_from);
-
-    if (date > new Date()) {
+    let date_from = new Date(item.valid_to);
+    if (date_from > new Date()) {
       chartData.push({
-        x: date,
+        x: date_from,
         y: item.value_inc_vat,
       })
     }

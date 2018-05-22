@@ -9,9 +9,10 @@ const buildAxis = (graphData) => {
   for (var i = 0; i < graphData.length; i++) {
     if (i % numberOfHours == 0) {
       const datum = graphData[i];
-      axis.push(datum.x.getTime())
+      axis.push(datum.x)
     }
   }
+  console.log('axis', axis)
   return axis;
 }
 
@@ -24,9 +25,7 @@ const Chart = ({ graphData }) => (
         <XAxis
             tickValues={buildAxis(graphData)}
             tickFormat={(d) => {
-              var date = new Date(0)
-              date.setUTCMilliseconds(d)
-              return date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+              return d.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             }}
             />
         <YAxis/>

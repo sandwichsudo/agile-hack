@@ -8,7 +8,7 @@ describe('repo search actions', () => {
   describe('fetchRepos', () => {
     it('should call searchService.repoSearch and dispatch actions', async () => {
       searchService.__setMockReposSearch(Promise.resolve({
-        items: 'foo',
+        results: 'foo',
       }));
       const dispatch = jest.fn();
       await fetchRepos()(dispatch);

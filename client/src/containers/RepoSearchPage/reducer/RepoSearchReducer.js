@@ -5,9 +5,22 @@ const initialState = {
   error: '',
   loading: false,
   morningMinTime: 6,
-  morningMaxTime: 8,
-  afternoonMinTime: 8,
+  morningMaxTime: 12,
+  afternoonMinTime: 0,
   afternoonMaxTime: 12,
+  devices: [{
+    id: 'washingmachine',
+    timeinHours: 1,
+    name: 'Washine Machine',
+    verbage: 'put washing machine on',
+    kwPerHour: 2,
+  },{
+    id: 'car',
+    timeinHours: 4,
+    name: 'Electric Car',
+    verbage: 'charge the car',
+    kwPerHour: 6,
+  }]
 };
 
 export default (state = initialState, action) => {

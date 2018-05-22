@@ -1,10 +1,10 @@
 import results from './results';
 import { getCheapestPeriods } from './selectors';
 
-Object.defineProperty(Date, "now", {
-    value: jest.fn(() => new Date('2018-05-20T18:00:00Z')),
-    writable: true
-});
+// Object.defineProperty(Date, "now", {
+//     value: jest.fn(() => new Date('2018-05-20T18:00:00Z')),
+//     writable: true
+// });
 
 describe('selectors', () => {
   describe('getPeriods', () => {
@@ -16,7 +16,7 @@ describe('selectors', () => {
         afternoonMinTime: 0,
         afternoonMaxTime: 8,
       };
-      const periods = getCheapestPeriods(state);
+      const periods = getCheapestPeriods(state, 1);
       expect(periods).toHaveLength(2)
       expect(periods[0]).toHaveLength(1)
       expect(periods[1][0].time).toEqual('18:00-19:00')

@@ -20,6 +20,12 @@ export default {
     publicPath: '/',
     filename: 'bundle.js'
   },
+  optimization: {
+     splitChunks: {
+       chunks: 'all'
+     }
+  },
+  mode: 'development',
   plugins: [
     new webpack.optimize.SplitChunksPlugin(),
     new webpack.DefinePlugin({
